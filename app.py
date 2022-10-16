@@ -46,8 +46,8 @@ class App():
                 self.strategy_map[name] = StrategyRNN(name, ticker, interval, u=units, e=epoch)
         except  NameError as ne:
             return "Ticker: " + ne.args[0] + ", its not found", 400
-        except Exception as e:
-            return str(e), 500
+        #except Exception as e:
+        #    return str(e), 500
 
         return "OK", 200
 

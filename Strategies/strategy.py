@@ -8,7 +8,6 @@ class Strategy(ABC):
         self.name = name
         self.ticker = ticker
         self.interval = int(int(interval) * 86400)
-        self.id = uuid.uuid4()
 
     # Use yahoo finance to take the actual price
     def get_actual_price(selfd, ticker):

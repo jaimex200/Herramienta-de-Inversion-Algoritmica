@@ -12,16 +12,16 @@ class ApiMeta(type):
 
 class Api(metaclass=ApiMeta):
     def __init__(self):
-        file = open("api.config", "r")
+        file = open("app.config", "r")
         lines = file.readlines()
 
         data = list(map( lambda x: x.strip("\n").split("="), lines))
 
-        self.base_url           = data[0][1]
-        self.account_url        = self.base_url + data[1][1]
-        self.orders_url         = self.base_url + data[2][1]
-        self.open_position_url  = self.base_url + data[3][1]
-        self.headers            = {data[4][1]: data[5][1], data[6][1]: data[7][1]}
+        self.base_url           = "https://paper-api.alpaca.markets"
+        self.account_url        = self.base_url + "/v2/account"
+        self.orders_url         = self.base_url + "/v2/orders"
+        self.open_position_url  = self.base_url + "/v2/positions"
+        self.headers            = {"APCA-API-KEY-ID": data[5][1], "APCA-API-SECRET-KEY": data[6][1]}
 
     def get_account(self):
         r = requests.get(self.account_url, headers=self.headers)

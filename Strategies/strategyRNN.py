@@ -21,6 +21,18 @@ class StrategyRNN(Strategy):
     # poder pasar vcalores ########### IMP ############
     def __init__(self, name, ticker, interval, d_x = 15, d_y = 5, d_m = 30, u = 100, e = 250):
         super().__init__(name, ticker, interval)
+        # Add to db data to train
+        file = open("db.config", "r")
+        lines = file.readlines()
+        data = list(map( lambda x: x.strip("\n").split("="), lines))
+        num_days      = int(data[4][1])
+        start_date      = (datetime.now() - timedelta(num_days)).strftime('%Y-%m-%d')
+        end_date        = datetime.now().strftime('%Y-%m-%d')
+
+        stockData = self.get_data(ticker, start_date=start_date, end_date=end_date)
+        priceDAO.infoToSQL(stockData, ticker)
+
+
         ## Create rnn and train
 
         ## Values to the correction matrix, take x days and see y days to correct

@@ -45,7 +45,7 @@ class dataStructure:
             #self.print_vec(vec, next_vec)
             return stay
         
-        # Ruptura de acumulacion "Comprobar q va prrimero si min o max"
+        # Ruptura de acumulacion 
         if max_y and min_y:
             for elem in next_vec:
                 if elem == max(next_vec):
