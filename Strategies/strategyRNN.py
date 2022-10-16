@@ -19,7 +19,7 @@ from datetime import datetime, timedelta
 
 class StrategyRNN(Strategy):
     # poder pasar vcalores ########### IMP ############
-    def __init__(self, name, ticker, interval, d_x = 15, d_y = 5, d_m = 30, u = 100, e = 250):
+    def __init__(self, name, ticker, interval, d_x = 30, d_y = 30, d_m = 30, u = 100, e = 250):
         super().__init__(name, ticker, interval)
         # Add to db data to train
         file = open("db.config", "r")
@@ -70,7 +70,7 @@ class StrategyRNN(Strategy):
         L1 = 0.00002
         L2 = 0.00002
         epoch = e
-        batch = 10
+        batch = 400
         ###
 
         # Model
