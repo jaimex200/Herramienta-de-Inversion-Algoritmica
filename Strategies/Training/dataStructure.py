@@ -13,14 +13,6 @@ class dataStructure:
         self.days_y = y
         self.train_price = int(train_price)
 
-    # Funcion para confirmar tendencias
-    def print_vec(self, vec_x, vec_y):
-        plt.clf()
-
-        #plt.figure(figsize=(12,6))
-        plt.plot(vec_x + vec_y)
-        plt.show()
-
     def correction_max_min(self, max_y, min_y, next_vec, vec):
         buy = [1,0,0]
         sell = [0,1,0]
@@ -28,21 +20,14 @@ class dataStructure:
 
         # Tendencia alcista
         if max_y and not min_y:
-            #print("tendencia alcista")
-            #self.print_vec(vec, next_vec)
             return buy
         
         # Tendencia bajista
         if not max_y and min_y:
-            
-            #print("tendencia bajista")
-            #self.print_vec(vec, next_vec)
             return sell
         
         # Acumulacion
         if not max_y and not min_y:
-            #print("Acumulacion")
-            #self.print_vec(vec, next_vec)
             return stay
         
         # Ruptura de acumulacion 
@@ -50,16 +35,10 @@ class dataStructure:
             for elem in next_vec:
                 if elem == max(next_vec):
                     max_first = True
-                    #print("Ruptura acumulacion vendo")
-                    #self.print_vec(vec, next_vec)
                     return sell
-                    break
                 if elem == min(next_vec):
                     max_first = False
-                    #print("Ruptura acumulacion compro")
-                    #self.print_vec(vec, next_vec)
                     return buy
-                    break 
         
         return stay
     
@@ -76,8 +55,6 @@ class dataStructure:
         else:
             min_y = False
         
-        #print("Antes", max_price, min_price)
-        #print("Despues", max(next_vec), min(next_vec))
         return self.correction_max_min(max_y, min_y, next_vec, vec)
         
     def cast_elem(self, elem):
