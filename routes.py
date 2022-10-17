@@ -23,20 +23,20 @@ class Routes():
     # route to add a strategy (with parameters)
     @flask_app.route("/add_rnn", methods=['POST'])
     def add_strategy_rnn():
-        #try:
-        name = request.form['name']
-        ticker = request.form['ticker']
-        interval = float(request.form['interval'])
+        try:
+            name = request.form['name']
+            ticker = request.form['ticker']
+            interval = float(request.form['interval'])
 
-        
-        default = True if request.form['default'] == "True" else False
-        if not default:
-            units = int(request.form['units'])
-            epoch = int(request.form['epoch'])
+            
+            default = True if request.form['default'] == "True" else False
+            if not default:
+                units = int(request.form['units'])
+                epoch = int(request.form['epoch'])
 
-            return app.application.add_strategy_RNN(name, ticker, interval, default, units=units, epoch=epoch)
-        #except Exception as e:
-        #    return str(e), 400
+                return app.application.add_strategy_RNN(name, ticker, interval, default, units=units, epoch=epoch)
+        except Exception as e:
+            return str(e), 400
 
         # add the strategy to app
         return app.application.add_strategy_RNN(name, ticker, interval, default)

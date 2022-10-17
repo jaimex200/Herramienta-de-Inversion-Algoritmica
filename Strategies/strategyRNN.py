@@ -22,7 +22,7 @@ class StrategyRNN(Strategy):
     def __init__(self, name, ticker, interval, d_x = 30, d_y = 30, d_m = 30, u = 100, e = 250):
         super().__init__(name, ticker, interval)
         # Add to db data to train
-        file = open("db.config", "r")
+        file = open("app.config", "r")
         lines = file.readlines()
         data = list(map( lambda x: x.strip("\n").split("="), lines))
         num_days      = int(data[4][1])
@@ -99,14 +99,11 @@ class StrategyRNN(Strategy):
 
     def strategy(self):
         K.clear_session()
-        print("1", self.model_path)
         model = keras.models.load_model(self.model_path)
-        print("2")
         start_date = datetime.now() - timedelta(self.days_matrix - 1)  
         end_date = datetime.now() 
         data = self.get_data(self.ticker, start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
         data_to_eval = self.dataStructure.create_tridimensional_matrix_evaluate(data)
-        print("3")
         evaluation = model.predict([data_to_eval])[0]
         print(evaluation)
         maxNum = max(evaluation)
