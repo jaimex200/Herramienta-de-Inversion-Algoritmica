@@ -83,7 +83,7 @@ class App():
     
     # Stop a worker
     def stop_worker_strategy(self, name):
-        if (not self.workers_map[name]):
+        if (not self.workers_map.get(name, False)):
             return "Worker doesnt exist", 400
         if (self.workers_map[name].onExec == True):
             self.workers_map[name].stop()
@@ -93,7 +93,7 @@ class App():
     
     # Stop a worker
     def start_worker_strategy(self, name):
-        if (not self.workers_map[name]):
+        if (not self.workers_map.get(name, False)):
             return "Worker doesnt exist", 400
         if (self.workers_map[name].onExec == False):
             self.workers_map[name].start()
@@ -102,13 +102,13 @@ class App():
         return "OK", 200
     
     def status_worker_strategy(self, name):
-        if (not self.workers_map[name]):
+        if (not self.workers_map.get(name, False)):
             return "Worker doesnt exist", 400
 
         return str(self.workers_map[name].onExec), 200
 
     def delete_strategy(self, name):
-        if (not self.strategy_map[name]):
+        if (not self.strategy_map.get(name, False)):
             return "Strategy doesnt exist", 400
 
         workers = self.workers_map.values()
