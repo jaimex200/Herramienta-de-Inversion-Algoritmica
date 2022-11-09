@@ -20,8 +20,8 @@ class App():
             return name + " is in use, try other name", 400 
         if ("," in name):
             return "Not allow to use , in names", 400
-        if (interval <= 0):
-            return "Interval must be more than 0", 400
+        if (interval <= 1):
+            return "Interval must be more than 1 day", 400
  
         try:
             self.strategy_map[name] = StrategySimple(name, ticker, interval)
@@ -36,8 +36,8 @@ class App():
             return name + " is in use, try other name", 400 
         if ("," in name):
             return "Not allow to use , in names", 400
-        if (interval <= 0):
-            return "Interval must be more than 0", 400
+        if (interval <= 1):
+            return "Interval must be more than 1 day", 400
 
         try:
             if default:
