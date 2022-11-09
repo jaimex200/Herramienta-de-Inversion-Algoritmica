@@ -79,10 +79,10 @@ class Routes():
         return app.application.start_worker_strategy(worker_name)
     
     # Worker status
-    @flask_app.route("/status", methods=['POST'])
+    @flask_app.route("/is_active", methods=['POST'])
     def status_worker_strategy():
         worker_name = request.form['name']
-        return app.application.status_worker_strategy(worker_name)
+        return app.application.is_active_worker_strategy(worker_name)
 
     # Delete a strategy
     @flask_app.route("/delete_strategy", methods=['POST'])

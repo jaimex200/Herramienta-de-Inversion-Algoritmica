@@ -101,7 +101,7 @@ class App():
             return "is running", 200
         return "OK", 200
     
-    def status_worker_strategy(self, name):
+    def is_active_worker_strategy(self, name):
         if (not self.workers_map.get(name, False)):
             return "Worker doesnt exist", 400
 

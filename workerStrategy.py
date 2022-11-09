@@ -10,7 +10,6 @@ class WorkerStrategy():
         self.strategy = strategy
         self.api = Api()
         self.onExec = False
-        self.id = uuid.uuid4()
 
     def start(self):
         self.worker = mp.Process(target=self.exec)
