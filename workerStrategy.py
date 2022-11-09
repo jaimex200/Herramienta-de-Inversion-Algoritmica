@@ -56,12 +56,9 @@ class WorkerStrategy():
             try:
                 str_order = self.strategy.strategy()
                 if str_order.option == "stay":
-                    print("stay")
-                    print()
+                    pass
                 else:
                     order = self.api.send_order(str_order)
-                    print(order)
-                    print()
 
                 f =open("Strategies/history.txt", "a")
                 while (True):
