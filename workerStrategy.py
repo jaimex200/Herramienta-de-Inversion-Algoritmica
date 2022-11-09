@@ -29,6 +29,9 @@ class WorkerStrategy():
 
     def stats(self):
         orders = []
+        buy = 0
+        sell = 0
+        stay = 0
 
         f =open("Strategies/history.txt", "r")
         lines = f.readlines()
@@ -36,10 +39,16 @@ class WorkerStrategy():
         for elem in lines:
             order = json.loads(elem)
             if self.name == order[0]:
+                if order[1][2] == "buy":
+                    buy += 1
+                elif order[1][2] == "sell":
+                    sell += 1
+                else:
+                    stay += 1
                 orders.append(order[1])
         f.close()
-
-        return orders
+        total = buy + sell + stay
+        return [orders, {"buy": buy/total, "sell": sell/total, "stay": stay/total}]
 
     # Worker Function
     def exec(self):
