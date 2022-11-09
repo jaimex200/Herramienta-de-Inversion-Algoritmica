@@ -135,4 +135,12 @@ class App():
             return "OK", 200
         else:
             return "Worker doesnt exist", 400
+    
+    def stats_worker(self, name):
+        worker = self.workers_map.get(name, False)
+        if (worker):
+            ret = worker.stats()
+            return json.dumps(ret), 200
+        else:
+            return "Worker doesnt exist", 400
         

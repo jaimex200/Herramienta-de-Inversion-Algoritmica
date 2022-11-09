@@ -84,17 +84,23 @@ class Routes():
         worker_name = request.form['name']
         return app.application.status_worker_strategy(worker_name)
 
-    # Delete a strategy (On progress)
+    # Delete a strategy
     @flask_app.route("/delete_strategy", methods=['POST'])
     def delete_strategy():
         strategy_name = request.form['name']
         return app.application.delete_strategy(strategy_name)
     
-    # Delete a worker (On progress)
+    # Delete a worker
     @flask_app.route("/delete_worker", methods=['POST'])
     def delete_worker_strategy():
         worker_name = request.form['name']
         return app.application.delete_worker(worker_name)
+
+    # Stats of a worker
+    @flask_app.route("/stats_worker", methods=['POST'])
+    def stats_worker_strategy():
+        worker_name = request.form['name']
+        return app.application.stats_worker(worker_name)
 
 
 if __name__ == '__main__':
