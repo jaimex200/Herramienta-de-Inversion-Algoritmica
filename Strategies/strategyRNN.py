@@ -21,6 +21,7 @@ class StrategyRNN(Strategy):
     # poder pasar vcalores ########### IMP ############
     def __init__(self, name, ticker, interval, d_x = 30, d_y = 30, d_m = 30, u = 100, e = 250):
         super().__init__(name, ticker, interval)
+        self.get_actual_price(self.ticker)
         # Add to db data to train
         file = open("app.config", "r")
         lines = file.readlines()
@@ -105,7 +106,6 @@ class StrategyRNN(Strategy):
         data = self.get_data(self.ticker, start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
         data_to_eval = self.dataStructure.create_tridimensional_matrix_evaluate(data)
         evaluation = model.predict([data_to_eval])[0]
-        print(evaluation)
         maxNum = max(evaluation)
         if evaluation[0] == maxNum:
             return Order(0.01, self.ticker, "buy")

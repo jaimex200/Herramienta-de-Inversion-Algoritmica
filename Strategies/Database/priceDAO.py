@@ -61,7 +61,6 @@ def infoToSQL (df, stock):
     Volume =        list(df.to_dict()['Volume'].items())
     Dividends =     list(df.to_dict()['Dividends'].items())
     StockSplits =   list(df.to_dict()['Stock Splits'].items())  
-    print(stock)
     # Insertar en base de datos
     for count in range(0, (len(Open))):
         try:
@@ -71,7 +70,7 @@ def infoToSQL (df, stock):
         except psycopg2.errors.UniqueViolation:
             conn.rollback()
         except psycopg2.errors.NumericValueOutOfRange:
-            print(stock, Open[count][0], Open[count][1], High[count][1], Low[count][1], Close[count][1], Volume[count][1], Dividends[count][1], StockSplits[count][1])
+            #print(stock, Open[count][0], Open[count][1], High[count][1], Low[count][1], Close[count][1], Volume[count][1], Dividends[count][1], StockSplits[count][1])
             conn.rollback()
         except:
             conn.rollback()
