@@ -14,7 +14,7 @@ from tensorflow import keras as keras_tf
 import tensorflow as tf
 import yfinance as yf
 from datetime import datetime
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 
 class StrategyRNN(Strategy):
@@ -28,7 +28,7 @@ class StrategyRNN(Strategy):
         data = list(map( lambda x: x.strip("\n").split("="), lines))
         num_days      = int(data[4][1])
         start_date      = (datetime.now() - timedelta(num_days)).strftime('%Y-%m-%d')
-        end_date        = datetime.now().strftime('%Y-%m-%d')
+        end_date        = date(2022, 5, 15).strftime('%Y-%m-%d')
 
         stockData = self.get_data(ticker, start_date=start_date, end_date=end_date)
         priceDAO.infoToSQL(stockData, ticker)
@@ -47,7 +47,7 @@ class StrategyRNN(Strategy):
         if d_x <= 0 or d_y <= 0 or d_x > 40 or d_y > 30 or u <= 0 or u > 300 or e <= 0 or e > 500:
             raise Exception("Units (u) between 1 and 300, epoch (e) between 1 and 500")
         ## Percentaje that the RNN use to train and test
-        ptrain = 0.8
+        ptrain = 0.7
 
         ########### RNN DATA CREATION ###########
         self.dataStructure = DataStructure(days_x, days_y, EnumTrainPrice.CLOSE)
