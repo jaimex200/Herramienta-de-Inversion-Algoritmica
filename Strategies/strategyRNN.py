@@ -19,7 +19,7 @@ from datetime import datetime, timedelta, date
 
 class StrategyRNN(Strategy):
     # poder pasar vcalores ########### IMP ############
-    def __init__(self, name, ticker, qty, interval, d_x = 30, d_y = 30, d_m = 30, u = 100, e = 250):
+    def __init__(self, name, ticker, interval, qty, d_x = 30, d_y = 30, d_m = 30, u = 100, e = 250):
         super().__init__(name, ticker, interval, qty)
         self.get_actual_price(self.ticker)
         # Add to db data to train
