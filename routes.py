@@ -14,11 +14,12 @@ class Routes():
             name = request.form['name']
             ticker = request.form['ticker']
             interval = float(request.form['interval'])
+            qty = float(request.form['qty'])
         except Exception as e:
             return str(e), 400
 
         # add the strategy to app
-        return app.application.add_strategy_simple(name, ticker, interval)
+        return app.application.add_strategy_simple(name, ticker, interval, qty)
     
     # route to add a strategy (with parameters)
     @flask_app.route("/add_rnn", methods=['POST'])
@@ -27,6 +28,7 @@ class Routes():
             name = request.form['name']
             ticker = request.form['ticker']
             interval = float(request.form['interval'])
+            qty = float(request.form['qty'])
 
             
             default = True if request.form['default'] == "True" else False
@@ -34,12 +36,12 @@ class Routes():
                 units = int(request.form['units'])
                 epoch = int(request.form['epoch'])
 
-                return app.application.add_strategy_RNN(name, ticker, interval, default, units=units, epoch=epoch)
+                return app.application.add_strategy_RNN(name, ticker, interval, qty, default, units=units, epoch=epoch)
         except Exception as e:
             return str(e), 400
 
         # add the strategy to app
-        return app.application.add_strategy_RNN(name, ticker, interval, default)
+        return app.application.add_strategy_RNN(name, ticker, interval, qty, default)
     
     ###############################################
 
@@ -60,11 +62,11 @@ class Routes():
         worker_name = request.form['worker_name']
         return app.application.exec_strategy(strategy_name, worker_name)
     
-    # Info of a worker
-    @flask_app.route("/worker_info", methods=['POST'])
+    # Info of a strategy
+    @flask_app.route("/strategy_info", methods=['POST'])
     def info_strategy():
         worker_name = request.form['name']
-        return app.application.info_worker(worker_name)
+        return app.application.info_strategy(worker_name)
     
     # Stop a strategy
     @flask_app.route("/stop", methods=['POST'])

@@ -15,35 +15,39 @@ class App():
         
 
     #####################STRATEGIES##############################
-    def add_strategy_simple(self, name, ticker, interval):
+    def add_strategy_simple(self, name, ticker, interval, qty):
         if (name in self.strategy_map.keys()):
             return name + " is in use, try other name", 400 
         if ("," in name):
             return "Not allow to use , in names", 400
         if (interval < 1):
             return "Interval must be more than 1 day", 400
+        if (qty <= 0):
+            return "Quantity must be more than 0", 400
  
         try:
-            self.strategy_map[name] = StrategySimple(name, ticker, interval)
+            self.strategy_map[name] = StrategySimple(name, ticker, interval, qty)
         except  NameError as ne:
             return "Ticker: " + ne.args[0] + ", its not found", 400
 
         return "OK", 200
     
 
-    def add_strategy_RNN(self, name, ticker, interval, default, units = -1, epoch = -1):
+    def add_strategy_RNN(self, name, ticker, interval, qty, default, units = -1, epoch = -1):
         if (name in self.strategy_map.keys()):
             return name + " is in use, try other name", 400 
         if ("," in name):
             return "Not allow to use , in names", 400
         if (interval < 1):
             return "Interval must be more than 1 day", 400
+        if (qty <= 0):
+            return "Quantity must be more than 0", 400
 
         try:
             if default:
-                self.strategy_map[name] = StrategyRNN(name, ticker, interval)
+                self.strategy_map[name] = StrategyRNN(name, ticker, interval, qty)
             else:
-                self.strategy_map[name] = StrategyRNN(name, ticker, interval, u=units, e=epoch)
+                self.strategy_map[name] = StrategyRNN(name, ticker, interval, qty, u=units, e=epoch)
         except  NameError as ne:
             return "Ticker: " + ne.args[0] + ", its not found", 400
         except Exception as e:
@@ -75,11 +79,11 @@ class App():
         return "OK", 200
 
     # Info worker
-    def info_worker(self, name):
-        if (not self.workers_map.get(name, False)):
-            return "Worker doesnt exist", 400
-        worker = self.workers_map[name]
-        return json.dumps(worker.get_info()), 200
+    def info_strategy(self, name):
+        if (not self.strategy_map.get(name, False)):
+            return "Strategy doesnt exist", 400
+        strategy = self.strategy_map[name]
+        return json.dumps(strategy.get_info()), 200
     
     # Stop a worker
     def stop_worker_strategy(self, name):

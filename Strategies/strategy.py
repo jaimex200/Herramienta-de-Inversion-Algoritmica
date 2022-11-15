@@ -4,10 +4,11 @@ import uuid
 
 # Abstract class of all strategies
 class Strategy(ABC):
-    def __init__(self, name, ticker, interval):
+    def __init__(self, name, ticker, interval, qty):
         self.name = name
         self.ticker = ticker
         self.interval = int(int(interval) * 86400)
+        self.qty = qty
 
     # Use yahoo finance to take the actual price
     def get_actual_price(selfd, ticker):
@@ -19,4 +20,8 @@ class Strategy(ABC):
 
     @abstractmethod
     def strategy(self):
+        pass
+
+    @abstractmethod
+    def get_info(self):
         pass

@@ -19,8 +19,8 @@ from datetime import datetime, timedelta, date
 
 class StrategyRNN(Strategy):
     # poder pasar vcalores ########### IMP ############
-    def __init__(self, name, ticker, interval, d_x = 30, d_y = 30, d_m = 30, u = 100, e = 250):
-        super().__init__(name, ticker, interval)
+    def __init__(self, name, ticker, qty, interval, d_x = 30, d_y = 30, d_m = 30, u = 100, e = 250):
+        super().__init__(name, ticker, interval, qty)
         self.get_actual_price(self.ticker)
         # Add to db data to train
         file = open("app.config", "r")
@@ -82,12 +82,15 @@ class StrategyRNN(Strategy):
 
         model.compile(loss='binary_crossentropy', optimizer=keras_tf.optimizers.Adam(), metrics=['accuracy'])
 
-        model.fit(train_vec, correction_train_vec, epochs=epoch, batch_size=batch, validation_data = (test_vec, correction_test_vec))
+        history = model.fit(train_vec, correction_train_vec, epochs=epoch, batch_size=batch, validation_data = (test_vec, correction_test_vec))
+        hd = history.history
 
         ##########################################
         ## Guardar modelo
         self.model_path = "Strategies/Models/" + self.name + ".h5"
         model.save(self.model_path)
+
+        self.info = {"name": self.name, "ticker": self.ticker, "interval": self.interval/86400, "quantity": self.qty, "accuracy": hd['accuracy'][-1], "val_accuracy": hd['val_accuracy'][-1], "loss": hd['loss'][-1], "val_loss": hd['val_loss'][-1]}
     
     def get_data(self, ticker, start_date, end_date):
         try:
@@ -113,3 +116,6 @@ class StrategyRNN(Strategy):
             return Order(0.01, self.ticker, "sell")
         if evaluation[2] == maxNum:
             return Order(0, self.ticker, "stay")
+
+    def get_info(self):
+        return self.info

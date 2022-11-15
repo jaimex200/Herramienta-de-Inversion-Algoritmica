@@ -21,11 +21,6 @@ class WorkerStrategy():
         self.worker.terminate()
         self.worker.join()
         self.worker.close()
-    
-    def get_info(self):
-        info = {}
-        info["exec"] = self.onExec
-        return info
 
     def stats(self):
         orders = []
