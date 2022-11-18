@@ -11,7 +11,7 @@ class Strategy(ABC):
         self.qty = qty
 
     # Use yahoo finance to take the actual price
-    def get_actual_price(selfd, ticker):
+    def get_actual_price(self, ticker):
         tickerData = yf.Ticker(ticker)
         ## confirm that ticker exist on yf
         if tickerData.info['regularMarketPrice'] is None:
