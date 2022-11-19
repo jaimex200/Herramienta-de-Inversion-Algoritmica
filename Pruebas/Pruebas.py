@@ -2,9 +2,11 @@ import requests
 import json
 from time import sleep
 
-def add_strategy_rnn(name, ticker, interval, default, units, epoch):
-    url = 'http://127.0.0.1:5000/add_rnn'
-    myobj = {'name': name, 'ticker': ticker, 'interval': interval, 'default': default, 'units': units, 'epoch': epoch}
+conn = 'http://127.0.0.1:5000/'
+
+def add_strategy_rnn(name, ticker, interval, qty, default, units, epoch):
+    url = conn + 'add_rnn'
+    myobj = {'name': name, 'ticker': ticker, 'interval': interval, 'qty': qty, 'default': default, 'units': units, 'epoch': epoch}
 
     try:
         res = requests.post(url, data = myobj)
@@ -15,9 +17,9 @@ def add_strategy_rnn(name, ticker, interval, default, units, epoch):
     #print("Add strategy rnn ["+ name, ticker, interval, default, units, epoch + "]", "->", "PASS")
     return res
 
-def add_strategy_simple(name, ticker, interval):
-    url = 'http://127.0.0.1:5000/add_simple'
-    myobj = {'name': name, 'ticker': ticker, 'interval': interval}
+def add_strategy_simple(name, ticker, interval, qty):
+    url = conn + 'add_simple'
+    myobj = {'name': name, 'ticker': ticker, 'interval': interval, 'qty': qty}
 
     try:
         res = requests.post(url, data = myobj)
@@ -29,7 +31,7 @@ def add_strategy_simple(name, ticker, interval):
     return res
 
 def list_strategy():
-    url = 'http://127.0.0.1:5000/list_strategy'
+    url = conn + 'list_strategy'
 
     
     try:
@@ -43,7 +45,7 @@ def list_strategy():
     return res
 
 def list_worker():
-    url = 'http://127.0.0.1:5000/list_worker'
+    url = conn + 'list_worker'
 
     try:
         res = requests.get(url)
@@ -57,7 +59,7 @@ def list_worker():
 
 def exec_strategy(name, name_worker):
 
-    url = 'http://127.0.0.1:5000/exec'
+    url = conn + 'exec'
     myobj = {'strategy_name': name, 'worker_name': name_worker}
 
     try:
@@ -70,7 +72,7 @@ def exec_strategy(name, name_worker):
     return res
 
 def stop_worker(name):
-    url = 'http://127.0.0.1:5000/stop'
+    url = conn + 'stop'
     myobj = {'name': name}
 
     try:
@@ -83,7 +85,7 @@ def stop_worker(name):
     return res
 
 def start_worker(name):
-    url = 'http://127.0.0.1:5000/start'
+    url = conn + 'start'
     myobj = {'name': name}
 
     try:
@@ -95,8 +97,8 @@ def start_worker(name):
     #print("Start worker ["+ name + "]", "->", "PASS")
     return res
 
-def info_worker(name):
-    url = 'http://127.0.0.1:5000/worker_info'
+def info_strategy(name):
+    url = conn + 'strategy_info'
     myobj = {'name': name}
 
     try:
@@ -110,7 +112,7 @@ def info_worker(name):
 
 def is_active_worker(name):
 
-    url = 'http://127.0.0.1:5000/is_active'
+    url = conn + 'is_active'
     myobj = {'name': name}
 
     try:
@@ -124,7 +126,7 @@ def is_active_worker(name):
 
 def delete_strategy(name):
 
-    url = 'http://127.0.0.1:5000/delete_strategy'
+    url = conn + 'delete_strategy'
     myobj = {'name': name}
 
     try:
@@ -138,7 +140,7 @@ def delete_strategy(name):
 
 def delete_worker(name):
 
-    url = 'http://127.0.0.1:5000/delete_worker'
+    url = conn + 'delete_worker'
     myobj = {'name': name}
 
     try:
@@ -152,7 +154,7 @@ def delete_worker(name):
 
 def stats_worker(name):
 
-    url = 'http://127.0.0.1:5000/stats_worker'
+    url = conn + 'stats_worker'
     myobj = {'name': name}
 
     try:
@@ -172,53 +174,53 @@ name_worker = "test_e"
 ticker = "BTC-USD"
 
 # Strategy simple 
-if (add_strategy_simple(name_strategy, ticker, 1).text == "OK"):
+if (add_strategy_simple(name_strategy, ticker, 1, 0.01).text == "OK"):
     print("===============> PASS")
 else:
     print("===============> ERROR add strategy" )
 
-if (add_strategy_simple(name_strategy, ticker, 1).text == name_strategy + " is in use, try other name"):
+if (add_strategy_simple(name_strategy, ticker, 1, 0.01).text == name_strategy + " is in use, try other name"):
     print("===============> PASS")
 else:
     print("===============> ERROR repeat name")
 
-if (add_strategy_simple("3", "-----", 1).text == "Ticker: -----, its not found"):
+if (add_strategy_simple("3", "-----", 1, 0.01).text == "Ticker: -----, its not found"):
     print("===============> PASS")
 else:
     print("===============> ERROR bad ticker")
 
-if (add_strategy_simple("4", ticker, -2).text == "Interval must be more than 1 day"):
+if (add_strategy_simple("4", ticker, -2, 0.01).text == "Interval must be more than 1 day"):
     print("===============> PASS")
 else:
     print("===============> ERROR bad interval")
 
 ##########################################################################################################
-if (add_strategy_rnn(name_rnn_def, ticker, 1, True, 10, 200).text == "OK"):
+if (add_strategy_rnn(name_rnn_def, ticker, 1, 0.01, True, 10, 200).text == "OK"):
     print("===============> PASS")
 else:
     print("===============> ERROR default rnn")
 
-if (add_strategy_rnn(name_rnn_not_def, ticker, 1, False, 10, 10).text == "OK"):
+if (add_strategy_rnn(name_rnn_not_def, ticker, 1, 0.01, False, 10, 10).text == "OK"):
     print("===============> PASS")
 else:
     print("===============> ERROR not default")
 
-if (add_strategy_rnn("1", "-----", 1, False, 10, 10).text == "Ticker: -----, its not found"):
+if (add_strategy_rnn("1", "-----", 1, 0.01, False, 10, 10).text == "Ticker: -----, its not found"):
     print("===============> PASS")
 else:
     print("===============> ERROR bad ticker")
 
-if (add_strategy_rnn("2", ticker, -2, False, 10, 10).text == "Interval must be more than 1 day"):
+if (add_strategy_rnn("2", ticker, -2, 0.01, False, 10, 10).text == "Interval must be more than 1 day"):
     print("===============> PASS")
 else:
     print("===============> ERROR bad interval")
 
-if (add_strategy_rnn("4", ticker, 1, False, -3, 10).text == "Units (u) between 1 and 300, epoch (e) between 1 and 500"):
+if (add_strategy_rnn("4", ticker, 1, 0.01, False, -3, 10).text == "Units (u) between 1 and 300, epoch (e) between 1 and 500"):
     print("===============> PASS")
 else:
     print("===============> ERROR bad units")
 
-if (add_strategy_rnn("5", ticker, 1, False, 10, -3).text == "Units (u) between 1 and 300, epoch (e) between 1 and 500"):
+if (add_strategy_rnn("5", ticker, 1, 0.01, False, 10, -3).text == "Units (u) between 1 and 300, epoch (e) between 1 and 500"):
     print("===============> PASS")
 else:
     print("===============> ERROR bad units")
@@ -275,12 +277,12 @@ else:
 
 ##########################################################################################################
 
-if (info_worker(name_worker).ok == True):
+if (info_strategy(name_strategy).ok == True):
     print("===============> PASS")
 else:
     print("===============> ERROR info worker")
 
-if (info_worker("----").text == "Worker doesnt exist"):
+if (info_strategy("----").text == "Strategy doesnt exist"):
     print("===============> PASS")
 else:
     print("===============> ERROR bad name")
@@ -322,7 +324,7 @@ else:
     print("===============> ERROR delete strategy")
 
 ##########################################################################################################
-add_strategy_simple(name_strategy, ticker, 1)
+add_strategy_simple(name_strategy, ticker, 1, 0.01)
 exec_strategy(name_strategy, name_worker)
 stop_worker(name_worker)
 
