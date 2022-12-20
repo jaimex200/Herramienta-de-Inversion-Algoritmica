@@ -15,7 +15,11 @@ class Strategy(ABC):
         tickerData = yf.Ticker(ticker)
         ## confirm that ticker exist on yf
         if tickerData.info['regularMarketPrice'] is None:
-            raise NameError(ticker)
+            try:
+                data = tickerData.history()
+                return data['Close'].iloc[-1]
+            except:
+                raise NameError(ticker)
         return tickerData.info['regularMarketPrice']
 
     @abstractmethod
